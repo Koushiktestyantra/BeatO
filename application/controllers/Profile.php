@@ -21,14 +21,12 @@ class Profile extends CI_Controller {
     public function __construct()
 	{
 		parent::__construct();		
-		$this->load->helper(['url', 'language']);
-		//$this->load->library(['ion_auth', 'form_validation']);
+		$this->load->helper(['url', 'language']);		
 		$this->load->library('session');
 		$this->load->helper('form');		
 		$this->load->library('form_validation');		
 		$this->load->library('upload');
-		$this->load->helper('file');
-		//$this->lang->load('auth');
+		$this->load->helper('file');		
 		$this->load->database();
 		$this->load->model('profile_model');
 		
