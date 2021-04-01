@@ -7,24 +7,46 @@ class Profile_model extends CI_Model {
 	{
 		parent::__construct();
 	}
-	
-	
-     function profile($data)
-	   {
-			$data_array =array(
-					'name'=>$this->input->post('name'),
-					'gender'=>$this->input->post('gender'),
-					'email'=>$this->input->post('email'),
-					'city'=>$this->input->post('city'),
-					'phone'=>$this->input->post('phone'),
-					'experience'=>$this->input->post('experience'),
-					'description'=>$this->input->post('description'),
-					'created_at'=>date('Y-m-d H:i:s'),
-				);
-				$query= $this->db->insert('profile',$data_array);
-			
-			return $query; 
-	        
-	    }
+
+	function get_profiles()
+	{
+		$this->db->select('*');
+		$this->db->from('profile');
+		$data = $this->db->get();
+		return $data;
+	} 
+
+	function get_profile($id)
+	{
+		$this->db->select('*');
+		$this->db->from('profile');
+		$this->db->where('id',$id);
+		$data = $this->db->get();
+		return $data;
+	} 
+
+	function profile($data)
+	{
+		$query= $this->db->insert('profile',$data);
+		return $query;
+	}
+
+
+	function emailCount($email)
+	{
+		$this->db->select('email');
+		$this->db->from('profile');		       
+		$this->db->where('email',$email);
+		$this->db->order_by('id', 'asc');               
+		$query = $this->db->get()->num_rows();		       
+		return $query;
+	}       
+
+	function profileUpdate($data,$useid)
+	{
+		$this->db->where('id',$useid);
+		$res = $this->db->update('profile',$data);  //
+		return $res;
+	}
 
 }
