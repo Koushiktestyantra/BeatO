@@ -908,41 +908,4 @@ class Auth extends CI_Controller
 		}
 	}
 
-
-	public function create_profile()
-	{
-		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
-        {
-            redirect('auth', 'refresh');
-        }   
-        if($this->input->post('submit') != ''){ 
-        // validate form input
-        $this->form_validation->set_rules('name', 'Name', 'trim|required');   
-        $this->form_validation->set_rules('gender', 'Gender', 'required');      
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|unique');                   
-        $this->form_validation->set_rules('city', 'City', 'trim|required');
-        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|numeric|max_length[10]');
-        $this->form_validation->set_rules('experience', 'Experience', 'trim|required');
-        $this->form_validation->set_rules('profileImage', 'Image', 'required');
-       print_r($_POST);die;
-        if ($this->form_validation->run() === TRUE)
-        {
-            $email = strtolower($this->input->post('email'));            
-            $password = $this->input->post('password');
-
-            $additional_data = [
-                'name' => $this->input->post('name'),
-                'gender' => $this->input->post('gender'),
-                'email' => $email,
-                'specialization' => $this->input->post('city'),
-                'phone' => $this->input->post('phone'),
-                'experience' => $this->input->post('experience'),
-                'image' => $this->input->post('profileImage'),
-            ];
-        }
-        }
-           
-          $this->load->view('auth/create_profile');
-		}
-
 }
