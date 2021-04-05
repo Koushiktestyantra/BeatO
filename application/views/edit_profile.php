@@ -5,16 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <!-- <div class="col-sm-6">
-            <h1>Calendar</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Calendar</li>
-            </ol>
-          </div> -->
+        <div class="row mb-2">         
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -36,11 +27,11 @@
               <!-- form start -->
               <form action="<?php echo base_url(); ?>profile/update_profile" enctype="multipart/form-data" method="post">              
                <input type="hidden" class="form-control" name="profileId" id="profileId" value="<?php echo $profile->id; ?>">
-                <input type="hidden" class="form-control" name="imageName" id="imageName" value="<?php echo $profile->image; ?>">
+                <input type="hidden" class="form-control" name="imageName" id="imageName" value="<?php echo htmlspecialchars($profile->image, ENT_QUOTES,'UTF-8' ); ?>">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
-                    <input type="text" class="form-control" name="name" id="name" value="<?php echo $profile->name; ?>" placeholder="Enter Name">
+                    <input type="text" class="form-control" name="name" id="name" value="<?php echo htmlspecialchars( $profile->name,ENT_QUOTES,'UTF-8'); ?>" placeholder="Enter Name">
                   </div>
                    <div class="form-group">
                     <label for="exampleInputEmail1">Gender</label></br>
@@ -49,7 +40,7 @@
                   </div>                 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" value="<?php echo $profile->email; ?>" placeholder="Enter email">
+                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" value="<?php echo htmlspecialchars($profile->email, ENT_QUOTES,'UTF-8' ); ?>" placeholder="Enter email">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">City</label>
@@ -83,7 +74,7 @@
                   </div>  
                   <div class="form-group">
                     <label for="exampleInputEmail1">About Me</label>
-                    <textarea type="text" class="form-control" name="description" id="description" value="" placeholder="Description"><?php echo $profile->description; ?></textarea>
+                    <textarea type="text" class="form-control" name="description" id="description" value="" placeholder="Description"><?php echo htmlspecialchars( $profile->description, ENT_QUOTES,'UTF-8' ); ?></textarea>
                   </div>              
                 <!-- /.card-body -->
                 <div class="card-footer">

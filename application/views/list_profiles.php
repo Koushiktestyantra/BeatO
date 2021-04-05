@@ -29,8 +29,8 @@
                   <?php foreach($profiles as $profile){?>
                     <tr> 
                        <td> <?php echo $profile->id;?> </td>                     
-                      <td> <?php echo $profile->name;?> </td>
-                      <td><?php echo $profile->email;?></td>
+                      <td> <?php echo htmlspecialchars( $profile->name,ENT_QUOTES,'UTF-8');?> </td>
+                      <td><?php echo htmlspecialchars( $profile->email,ENT_QUOTES,'UTF-8');?></td>
                       <td><?php echo $profile->phone;?></td>
                       <td><a href="<?php echo base_url();?>profile/edit_profile/<?php echo $profile->id;?>">EDIT</a></td>
                     </tr> 

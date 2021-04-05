@@ -30,22 +30,12 @@ class Profile_model extends CI_Model {
 		$query= $this->db->insert('profile',$data);
 		return $query;
 	}
-
-
-	function emailCount($email)
-	{
-		$this->db->select('email');
-		$this->db->from('profile');		       
-		$this->db->where('email',$email);
-		$this->db->order_by('id', 'asc');               
-		$query = $this->db->get()->num_rows();		       
-		return $query;
-	}       
+	      
 
 	function profileUpdate($data,$useid)
 	{
 		$this->db->where('id',$useid);
-		$res = $this->db->update('profile',$data);  //
+		$res = $this->db->update('profile',$data);  
 		return $res;
 	}
 

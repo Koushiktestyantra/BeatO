@@ -1,3 +1,15 @@
+<?php $this->load->view('auth/header_login');?>
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="margin: 120px;background: none;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
 <h1><?php echo lang('login_heading');?></h1>
 <p><?php echo lang('login_subheading');?></p>
 
