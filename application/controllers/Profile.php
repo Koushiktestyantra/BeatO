@@ -383,8 +383,9 @@ class Profile extends CI_Controller {
 
      /**
      *
-	 * This function education is used 
-	 * to update the educational details of the user. 
+	 * This function services is used to
+	 * insert the services and experience 
+	 * details of the user into the database. 
 	 * 
 	 */
     public function services()
@@ -395,24 +396,29 @@ class Profile extends CI_Controller {
 			redirect('auth/login', 'refresh');
 		}        
 	        
-				        if($this->input->post('submit') == 'education')
+				        if($this->input->post('submit') == 'services')
 				        {                   	
 					        // validate form input 
-					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
-					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
-					        $this->form_validation->set_rules('year', 'Year', 'required');
-					        $this->form_validation->set_rules('sepecialization', 'Sepecialization', 'trim|required'); 
+					        $this->form_validation->set_rules('services', 'Services', 'trim|required');   
+					        $this->form_validation->set_rules('role', 'Role', 'trim|required|max_length[50]');
+					        $this->form_validation->set_rules('establishment', 'Establishment', 'required');
+					        $this->form_validation->set_rules('city', 'City', 'trim|required'); 
+					        $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required'); 
+					        $this->form_validation->set_rules('end_date', 'End Date', 'trim|required'); 
 					        if ($this->form_validation->run() === TRUE)
 					        {
-				         	    $form_data =[					             
-							                'qualification' => strtolower($this->input->post('qualification')),
-							                'college' => strtolower($this->input->post('college')),
-							                'year' => strtolower($this->input->post('year')),
-							                'sepecialization' => strtolower($this->input->post('sepecialization')),                
+				         	    $form_data = [
+				         	                'user_id' => $this->session->userdata('user_id'),			             
+							                'services' => strtolower($this->input->post('services')),
+							                'role' => strtolower($this->input->post('role')),
+							                'establishment' => strtolower($this->input->post('establishment')),
+							                'city' => strtolower($this->input->post('city')),
+							                'start_date' => strtolower($this->input->post('start_date')),
+							                'end_date' => strtolower($this->input->post('end_date')),                
 							                'created_at' => date('Y-m-d H:i:s'),                
 								            ];
 								            $form_data = $this->security->xss_clean($form_data);
-				                            $res = $this->profile_model->education($form_data);
+				                            $res = $this->profile_model->services($form_data);
 									if($res)
 									{
 										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has been submitted.</span>');
@@ -420,14 +426,103 @@ class Profile extends CI_Controller {
 										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has not been submitted.</span>');
 
 									}
-							           redirect('profile/education');            
+							           redirect('profile/services');            
 					        }
 					    }
 	    	$this->load->view('services');
     }
 
 
-    
+    /**
+     *
+	 * This function list_services is used to
+	 * list the services and experience 
+	 * details of the user. 
+	 * 
+	 */
+
+    public function list_services()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		$data['services'] = $this->profile_model->get_services($this->session->userdata('user_id'))->result();	
+        $this->load->view('list_services',$data);
+    } 
+
+
+     /**
+     *
+	 * This function edit_services is used to
+	 * show the services and experience 
+	 * details of the user for edit purpose. 
+	 * 
+	 */
+
+    public function edit_services()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		$data['services'] = $this->profile_model->get_services($this->session->userdata('user_id'))->row();	
+        $this->load->view('edit_services',$data);
+    } 
+   
+   /**
+     *
+	 * This function update_services is used to
+	 * edit the services and experience 
+	 * details of the user. 
+	 * 
+	 */
+
+    public function update_services()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		  if($this->input->post('submit') == 'edit_services')
+				        {                   	
+					        // validate form input 
+					        $this->form_validation->set_rules('services', 'Services', 'trim|required');   
+					        $this->form_validation->set_rules('role', 'Role', 'trim|required|max_length[100]');
+					        $this->form_validation->set_rules('establishment', 'Establishment', 'required');
+					        $this->form_validation->set_rules('city', 'City', 'trim|required'); 
+					        $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required'); 
+					        $this->form_validation->set_rules('end_date', 'End Date', 'trim|required'); 
+					        if ($this->form_validation->run() === TRUE)
+					        {
+				         	    $form_data = [				         	                			             
+							                'services' => strtolower($this->input->post('services')),
+							                'role' => strtolower($this->input->post('role')),
+							                'establishment' => strtolower($this->input->post('establishment')),
+							                'city' => strtolower($this->input->post('city')),
+							                'start_date' => strtolower($this->input->post('start_date')),
+							                'end_date' => strtolower($this->input->post('end_date')),                
+							                'updated_at' => date('Y-m-d H:i:s'),                
+								            ];
+								            $form_data = $this->security->xss_clean($form_data);
+				                      $res = $this->profile_model->servicesUpdate($form_data,$this->input->post('id'));
+									if($res)
+									{
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has been updated.</span>');
+									}else{
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has been updated.</span>');
+
+									}
+							           redirect('profile/edit_services/'.$this->input->post('id'));            
+					        }else{
+					        	$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has not been updated. Please fill are the fields.</span>');
+					        	 redirect('profile/edit_services/'.$this->input->post('id'));			        	
+					        }
+					    }else{
+					    	redirect('profile/list_services');
+					    }	
+       
+    } 
 
 
 }

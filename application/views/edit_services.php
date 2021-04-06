@@ -1,13 +1,4 @@
 <?php $this->load->view('auth/header');?>
-<!-- Tags Plugin Files -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" />
-<!--calender files-->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<!--calender files-->
 <?php $this->load->view('auth/sidebar');?>
 <script>
   $( function() {
@@ -27,8 +18,8 @@
      <!-- Main content -->
     <section class="content">
       <div class="container-fluid">     
-            <h1>Services & Experience Form</h1>
-			<p>Please Fill Your Services & Experience in this form</p>
+            <h1>Services & Experience Edit Form</h1>
+			<p>Please Fill Your Services & Experience in this form.</p>
              <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
@@ -40,47 +31,47 @@
               <?php echo validation_errors(); ?>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="<?php echo base_url(); ?>profile/services" enctype="multipart/form-data" method="post">
+               <form action="<?php echo base_url(); ?>profile/update_services" enctype="multipart/form-data" method="post">
                 <div class="card-body">
-                <input type="hidden" class="form-control" name="user_id" id="college" value="" placeholder="Enter Name">
+                <input type="hidden" class="form-control" name="id" value="<?php echo htmlspecialchars( $services->id); ?>" placeholder="Enter Name">
                   <div class="form-group">
                      <!-- Select multiple-->
                   <div class="form-group">
                     <label>Services</label>
-                     <input type="text" data-role="tagsinput" class="form-control" name="services" id="services" value="">    
+                     <input type="text" data-role="tagsinput" class="form-control" name="services" id="services" value="<?php echo htmlspecialchars( $services->services,ENT_QUOTES,'UTF-8'); ?>">    
                   </div>
                   <!-- Select multiple--> 
                   <div class="form-group"> 
                     <label for="exampleInputEmail1">Role</label>
-                    <input type="text" class="form-control" name="role" id="role" value="" placeholder="Enter Name">
+                    <input type="text" class="form-control" name="role" id="role" value="<?php echo htmlspecialchars( $services->role,ENT_QUOTES,'UTF-8'); ?>" placeholder="Enter Role">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Establishment</label></br>
-                    <input type="text" class="form-control" name="establishment" id="establishment" value="" placeholder="Enter Name">
+                    <input type="text" class="form-control" name="establishment" id="establishment" value="<?php echo htmlspecialchars( $services->establishment,ENT_QUOTES,'UTF-8'); ?>" placeholder="Enter Establishment Name">
                   </div> 
-                  <div class="form-group">
+                   <div class="form-group">
                     <label for="exampleInputEmail1">City</label>
-                    <select type="text" class="form-control" name="city" id="city">                    
+                    <select type="text" class="form-control" name="city" id="city">
                       <option value="">Select City</option>
-                      <option value="1">Mumbai</option>
-                      <option value="2">Delhi</option>
-                      <option value="3">Kolkata</option>
-                      <option value="4">Chennai</option>                                          
+                      <option value="1" <?php if($services->city == '1'){ echo 'selected="checked"';}?>>Mumbai</option>
+                      <option value="2" <?php if($services->city == '2'){ echo 'selected="checked"';}?>>Kolkata</option>
+                      <option value="3" <?php if($services->city == '3'){ echo 'selected="checked"';}?>>Delhi</option>
+                      <option value="4" <?php if($services->city == '4'){ echo 'selected="checked"';}?>>Chennai</option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Start Date</label></br>
-                    <input type="text" class="form-control" name="start_date" id="start_date" value="" placeholder="Enter Name">
+                    <input type="text" class="form-control" name="start_date" id="start_date" value="<?php echo htmlspecialchars( $services->start_date,ENT_QUOTES,'UTF-8'); ?>" placeholder="Enter Start Date">
                   </div> 
                   <div class="form-group">
                     <label for="exampleInputEmail1">End Date</label></br>
-                    <input type="text" class="form-control" name="end_date" id="end_date" value="" placeholder="Enter Name">
+                    <input type="text" class="form-control" name="end_date" id="end_date" value="<?php echo htmlspecialchars( $services->end_date,ENT_QUOTES,'UTF-8'); ?>" placeholder="Enter End Date">
                   </div>                                    
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" name="submit" class="btn btn-primary" value="services">Submit</button>
+                  <button type="submit" name="submit" class="btn btn-primary" value="edit_services">EDIT</button>
                 </div>
-              </form>              
+              </form>               
             </div><!-- /.card -->
             <!-- general form elements -->			
 	  </div>

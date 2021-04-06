@@ -61,4 +61,25 @@ class Profile_model extends CI_Model {
 		return $query;		
 	}
 
+	function services($data)
+	{
+		$query= $this->db->insert('services',$data);
+		return $query;
+	}
+
+	function get_services($userid)
+	{   $this->db->select('*');
+		$this->db->from('services');
+		$this->db->where('user_id',$userid);
+		$query = $this->db->get();
+		return $query;		
+	}
+
+	function servicesUpdate($data,$useid)
+	{
+		$this->db->where('id',$useid);
+		$query = $this->db->update('services',$data);  
+		return $query;
+	}
+
 }

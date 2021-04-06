@@ -64,7 +64,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../index3.html" class="nav-link">
+                <a href="<?php echo base_url();?>profile/services"" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Services & Experience</p>
                 </a>
