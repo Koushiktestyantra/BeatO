@@ -56,6 +56,7 @@ class Profile extends CI_Controller {
     }
    
      /**
+     *
 	 * This  function create_profile is used 
 	 * to show  the profile form to the users. 
 	 * 
@@ -134,6 +135,7 @@ class Profile extends CI_Controller {
 	}
 
      /**
+     *
 	 * This  function edit_profile is used 
 	 * to show  the edit profile form to the users. 
 	 * 
@@ -154,6 +156,7 @@ class Profile extends CI_Controller {
     }
     
     /**
+     *
 	 * This  function update_profile is used 
 	 * to update the profile of the user. 
 	 * 
@@ -311,7 +314,120 @@ class Profile extends CI_Controller {
         }else{                  	
         	redirect('profile/list_profile');
         }
+    } 
+
+
+     /**
+     *
+	 * This function education is used 
+	 * to update the educational details of the user. 
+	 * 
+	 */
+    public function education()
+    {
+    	//print_r($_SESSION);die;
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+        
+	        if($_SESSION['user_id'] != null)
+	        {
+				//$data['education_data'] = $this->profile_model->get_userdata($this->session->userdata('user_id'))->row();			    
+			    	    if($this->input->post('submit') == 'education')
+				        {
+				        // validate form input 
+					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
+					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
+					        $this->form_validation->set_rules('year', 'Year', 'required');
+					        $this->form_validation->set_rules('sepecialization', 'Sepecialization', 'trim|required');
+
+				        }else{ 
+				           $data['education_data'] = $this->profile_model->get_educationData($this->session->userdata('user_id'))->row();  	
+	        	           $this->load->view('education', $data);
+	                	}
+	        }else
+	        {
+				        if($this->input->post('submit') == 'education')
+				        {                   	
+					        // validate form input 
+					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
+					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
+					        $this->form_validation->set_rules('year', 'Year', 'required');
+					        $this->form_validation->set_rules('sepecialization', 'Sepecialization', 'trim|required'); 
+					        if ($this->form_validation->run() === TRUE)
+					        {
+				         	    $form_data =[					             
+							                'qualification' => strtolower($this->input->post('qualification')),
+							                'college' => strtolower($this->input->post('college')),
+							                'year' => strtolower($this->input->post('year')),
+							                'sepecialization' => strtolower($this->input->post('sepecialization')),                
+							                'created_at' => date('Y-m-d H:i:s'),                
+								            ];
+								            $form_data = $this->security->xss_clean($form_data);
+				                            $res = $this->profile_model->education($form_data);
+									if($res)
+									{
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has been submitted.</span>');
+									}else{
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has not been submitted.</span>');
+
+									}
+							           redirect('profile/education');            
+					        }
+					    }
+	    	}
     }
+
+    
+
+     /**
+     *
+	 * This function education is used 
+	 * to update the educational details of the user. 
+	 * 
+	 */
+    public function services()
+    {
+    	//print_r($_SESSION);die;
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}        
+	        
+				        if($this->input->post('submit') == 'education')
+				        {                   	
+					        // validate form input 
+					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
+					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
+					        $this->form_validation->set_rules('year', 'Year', 'required');
+					        $this->form_validation->set_rules('sepecialization', 'Sepecialization', 'trim|required'); 
+					        if ($this->form_validation->run() === TRUE)
+					        {
+				         	    $form_data =[					             
+							                'qualification' => strtolower($this->input->post('qualification')),
+							                'college' => strtolower($this->input->post('college')),
+							                'year' => strtolower($this->input->post('year')),
+							                'sepecialization' => strtolower($this->input->post('sepecialization')),                
+							                'created_at' => date('Y-m-d H:i:s'),                
+								            ];
+								            $form_data = $this->security->xss_clean($form_data);
+				                            $res = $this->profile_model->education($form_data);
+									if($res)
+									{
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has been submitted.</span>');
+									}else{
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has not been submitted.</span>');
+
+									}
+							           redirect('profile/education');            
+					        }
+					    }
+	    	$this->load->view('services');
+    }
+
+
+    
 
 
 }

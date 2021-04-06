@@ -35,8 +35,30 @@ class Profile_model extends CI_Model {
 	function profileUpdate($data,$useid)
 	{
 		$this->db->where('id',$useid);
-		$res = $this->db->update('profile',$data);  
-		return $res;
+		$query = $this->db->update('profile',$data);  
+		return $query;
+	}
+
+	function education($data)
+	{
+		$query= $this->db->insert('education',$data);
+		return $query;
+	}
+	
+	function get_userdata($useid)
+	{   $this->db->select('*');
+		$this->db->from('users');
+		$this->db->where('id',$useid);
+		$query = $this->db->get();
+		return $query;		
+	}
+
+	function get_educationData($userid)
+	{   $this->db->select('*');
+		$this->db->from('education');
+		$this->db->where('user_id',$userid);
+		$query = $this->db->get();
+		return $query;		
 	}
 
 }
