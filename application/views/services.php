@@ -41,8 +41,7 @@
               <!-- /.card-header -->
               <!-- form start -->
               <form action="<?php echo base_url(); ?>profile/services" enctype="multipart/form-data" method="post">
-                <div class="card-body">
-                <input type="hidden" class="form-control" name="user_id" id="college" value="" placeholder="Enter Name">
+                <div class="card-body">                
                   <div class="form-group">
                      <!-- Select multiple-->
                   <div class="form-group">

@@ -33,7 +33,7 @@
               <!-- form start -->
                <form action="<?php echo base_url(); ?>profile/update_services" enctype="multipart/form-data" method="post">
                 <div class="card-body">
-                <input type="hidden" class="form-control" name="id" value="<?php echo htmlspecialchars( $services->id); ?>" placeholder="Enter Name">
+                <input type="hidden" class="form-control" name="id" value="<?php echo htmlspecialchars( $services->id); ?>">
                   <div class="form-group">
                      <!-- Select multiple-->
                   <div class="form-group">
@@ -79,11 +79,6 @@
  </div>
   </div>    
 <?php $this->load->view('auth/footer.php'); ?>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
-  <!-- Tags Plugin Files -->
 <script type="text/javascript">
   $('#services').tagsinput({
    confirmKeys: [13, 44],

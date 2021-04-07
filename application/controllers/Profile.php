@@ -331,40 +331,30 @@ class Profile extends CI_Controller {
 			redirect('auth/login', 'refresh');
 		}
         
-	        if($_SESSION['user_id'] != null)
-	        {
-				//$data['education_data'] = $this->profile_model->get_userdata($this->session->userdata('user_id'))->row();			    
-			    	    if($this->input->post('submit') == 'education')
-				        {
-				        // validate form input 
-					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
-					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
-					        $this->form_validation->set_rules('year', 'Year', 'required');
-					        $this->form_validation->set_rules('sepecialization', 'Sepecialization', 'trim|required');
-
-				        }else{ 
-				           $data['education_data'] = $this->profile_model->get_educationData($this->session->userdata('user_id'))->row();  	
-	        	           $this->load->view('education', $data);
-	                	}
-	        }else
-	        {
+	      
 				        if($this->input->post('submit') == 'education')
 				        {                   	
 					        // validate form input 
 					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
 					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
 					        $this->form_validation->set_rules('year', 'Year', 'required');
-					        $this->form_validation->set_rules('sepecialization', 'Sepecialization', 'trim|required'); 
+					        $this->form_validation->set_rules('specialization', 'Specialization', 'trim|required'); 
 					        if ($this->form_validation->run() === TRUE)
 					        {
-				         	    $form_data =[					             
+				         	    $form_data =[
+				         	                'user_id' => $this->session->userdata('user_id'),			             
 							                'qualification' => strtolower($this->input->post('qualification')),
 							                'college' => strtolower($this->input->post('college')),
 							                'year' => strtolower($this->input->post('year')),
-							                'sepecialization' => strtolower($this->input->post('sepecialization')),                
+							                'specialization' => strtolower($this->input->post('specialization')),                
 							                'created_at' => date('Y-m-d H:i:s'),                
 								            ];
 								            $form_data = $this->security->xss_clean($form_data);
+								            $education_data = $this->profile_model->get_educationData($this->session->userdata('user_id'))->row();
+								            if($education_data){
+								            $this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">You have already submitted form.</span>');
+								            redirect('profile/education');
+								            }
 				                            $res = $this->profile_model->education($form_data);
 									if($res)
 									{
@@ -376,7 +366,105 @@ class Profile extends CI_Controller {
 							           redirect('profile/education');            
 					        }
 					    }
-	    	}
+					$this->load->view('education');    
+	    	
+    }
+
+
+     /**
+     *
+	 * This function list_education is used to
+	 * list the education and experience 
+	 * details of the user. 
+	 * 
+	 */
+
+    public function list_education()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		$data['educations'] = $this->profile_model->get_educationData($this->session->userdata('user_id'))->row();
+			
+        $this->load->view('list_education',$data);
+    }
+
+     /**
+     *
+	 * This function edit_education is used to
+	 * show the services and experience 
+	 * details of the user for edit purpose. 
+	 * 
+	 */
+
+    public function edit_education()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		$data['education_data'] = $this->profile_model->get_educationData($this->session->userdata('user_id'))->row();	
+        $this->load->view('edit_education',$data);
+    }
+
+     /**
+     *
+	 * This function updated_education is used to
+	 * edit the education  
+	 * details of the user. 
+	 * 
+	 */
+
+    public function updated_education()
+    {
+        if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}			    
+	    	    if($this->input->post('submit') == 'edit')
+				    {                   	
+					        // validate form input 
+					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
+					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
+					        $this->form_validation->set_rules('year', 'Year', 'required');
+					        $this->form_validation->set_rules('specialization', 'Specialization', 'trim|required'); 
+					        if ($this->form_validation->run() === TRUE)
+					        {
+				         	    $form_data =[					             
+							                'qualification' => strtolower($this->input->post('qualification')),
+							                'college' => strtolower($this->input->post('college')),
+							                'year' => strtolower($this->input->post('year')),
+							                'specialization' => strtolower($this->input->post('specialization')),                
+							                'updated_at' => date('Y-m-d H:i:s'),                
+								            ];
+								            $form_data = $this->security->xss_clean($form_data);
+								            $education_data = $this->profile_model->get_educationData($this->session->userdata('user_id'))->row();
+				                            $res = $this->profile_model->educationUpdate($form_data,$this->session->userdata('user_id'));
+									if($res)
+									{
+									if($education_data->qualification !== $this->input->post('qualification')){ 
+                                     $arr['qualification'] = $this->input->post('qualification');
+                                    }
+                                    if($education_data->college !== $this->input->post('college')){
+                                     $arr['college'] = $this->input->post('college');
+                                    }
+                                    if($education_data->year !== $this->input->post('year')){
+                                     $arr['year'] =  $this->input->post('year');
+                                    }
+                                    if($education_data->specialization !== $this->input->post('specialization')){
+                                      $arr['specialization'] =  $this->input->post('specialization');
+                                    }                                                                        
+                                    log_message('all', json_encode($arr));
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has been submitted.</span>');
+									}else{
+										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has not been submitted.</span>');
+
+									}
+							           redirect('profile/education');            
+					        }
+			        }
+	        
     }
 
     
@@ -485,44 +573,216 @@ class Profile extends CI_Controller {
 			redirect('auth/login', 'refresh');
 		}
 		  if($this->input->post('submit') == 'edit_services')
-				        {                   	
-					        // validate form input 
-					        $this->form_validation->set_rules('services', 'Services', 'trim|required');   
-					        $this->form_validation->set_rules('role', 'Role', 'trim|required|max_length[100]');
-					        $this->form_validation->set_rules('establishment', 'Establishment', 'required');
-					        $this->form_validation->set_rules('city', 'City', 'trim|required'); 
-					        $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required'); 
-					        $this->form_validation->set_rules('end_date', 'End Date', 'trim|required'); 
-					        if ($this->form_validation->run() === TRUE)
-					        {
-				         	    $form_data = [				         	                			             
-							                'services' => strtolower($this->input->post('services')),
-							                'role' => strtolower($this->input->post('role')),
-							                'establishment' => strtolower($this->input->post('establishment')),
-							                'city' => strtolower($this->input->post('city')),
-							                'start_date' => strtolower($this->input->post('start_date')),
-							                'end_date' => strtolower($this->input->post('end_date')),                
-							                'updated_at' => date('Y-m-d H:i:s'),                
-								            ];
-								            $form_data = $this->security->xss_clean($form_data);
-				                      $res = $this->profile_model->servicesUpdate($form_data,$this->input->post('id'));
-									if($res)
-									{
-										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has been updated.</span>');
-									}else{
-										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has been updated.</span>');
+		        {                   	
+			        // validate form input 
+			        $this->form_validation->set_rules('services', 'Services', 'trim|required');   
+			        $this->form_validation->set_rules('role', 'Role', 'trim|required|max_length[100]');
+			        $this->form_validation->set_rules('establishment', 'Establishment', 'required');
+			        $this->form_validation->set_rules('city', 'City', 'trim|required'); 
+			        $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required'); 
+			        $this->form_validation->set_rules('end_date', 'End Date', 'trim|required'); 
+			        if ($this->form_validation->run() === TRUE)
+			        {
+		         	    $form_data = [				         	                			             
+					                'services' => strtolower($this->input->post('services')),
+					                'role' => strtolower($this->input->post('role')),
+					                'establishment' => strtolower($this->input->post('establishment')),
+					                'city' => strtolower($this->input->post('city')),
+					                'start_date' => strtolower($this->input->post('start_date')),
+					                'end_date' => strtolower($this->input->post('end_date')),                
+					                'updated_at' => date('Y-m-d H:i:s'),                
+						            ];
+						            $form_data = $this->security->xss_clean($form_data);
+						            $service_data = $this->profile_model->get_services($this->input->post('id'))->row();      
+		                      $res = $this->profile_model->servicesUpdate($form_data,$this->input->post('id'));
+							if($res)
+							{  								
+                                    if($service_data->services !== $this->input->post('services')){ 
+                                     $arr['services'] = $this->input->post('services');
+                                    }
+                                    if($service_data->role !== $this->input->post('role')){
+                                     $arr['role'] = $this->input->post('role');
+                                    }
+                                    if($service_data->establishment !== $this->input->post('establishment')){
+                                     $arr['establishment'] =  $this->input->post('establishment');
+                                    }
+                                    if($service_data->city !== $this->input->post('city')){
+                                      $arr['city'] =  $this->input->post('city');
+                                    }
+                                    if($service_data->start_date !== $this->input->post('start_date')){
+                                     $arr['start_date'] =  $this->input->post('start_date');
+                                    }
+                                    if($service_data->end_date !== $this->input->post('end_date')){
+                                     $arr['end_date'] =  $this->input->post('end_date');
+                                    }                                     
+                                    log_message('all', json_encode($arr)); 
+								$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has been updated.</span>');
+							}else{
+								$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has been updated.</span>');
 
-									}
-							           redirect('profile/edit_services/'.$this->input->post('id'));            
-					        }else{
-					        	$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has not been updated. Please fill are the fields.</span>');
-					        	 redirect('profile/edit_services/'.$this->input->post('id'));			        	
-					        }
-					    }else{
-					    	redirect('profile/list_services');
-					    }	
+							}
+					           redirect('profile/edit_services/'.$this->input->post('id'));            
+			        }else{
+			        	$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has not been updated. Please fill are the fields.</span>');
+			        	 redirect('profile/edit_services/'.$this->input->post('id'));			        	
+			        }
+			    }else{
+			    	redirect('profile/list_services');
+			    }	
        
+    }
+
+
+    /**
+     *
+	 * This function rewards is used to
+	 * insert the rewards 
+	 * details of the user. 
+	 * 
+	 */
+
+    public function rewards()
+    {
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        if($this->input->post('submit') == 'rewards')
+			        {  
+				        // validate form input 
+				        $this->form_validation->set_rules('reward[]', 'Reward', 'trim|required');   
+                		$this->form_validation->set_rules('year[]', 'Year', 'trim|required');
+                		$this->form_validation->set_rules('membership[]', 'Membership', 'trim|required');
+				        if ($this->form_validation->run() === TRUE)
+				        {
+			         	    $form_data = [
+			         	                'user_id' => $this->session->userdata('user_id'),
+						                'reward' => strtolower(implode("|",$this->input->post('reward'))),
+						                'year' => strtolower(implode("|",$this->input->post('year'))),
+									    'membership' => strtolower(implode("|",$this->input->post('membership'))),        
+						                'created_at' => date('Y-m-d H:i:s'),                
+							            ];
+							            //print_r($form_data);die;
+							            $form_data = $this->security->xss_clean($form_data);
+							            $check = $this->profile_model->check_rewards($this->session->userdata('user_id'));
+							            if($check >0){
+                                           $this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">You already have submitted your form.</span>');
+                                           redirect('profile/rewards');
+							            }else
+							            {
+                                             $res = $this->profile_model->rewards($form_data);
+											if($res)
+											{
+												$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has been submitted.</span>');
+											}else{
+												$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has not been submitted.</span>');
+
+											}
+							            }
+			                  
+						           redirect('profile/rewards');            
+				        }
+				    }
+	    	
+        	$this->load->view('rewards');
     } 
+
+    /**
+     *
+	 * This function list_services is used to
+	 * list the services and experience 
+	 * details of the user. 
+	 * 
+	 */
+
+    public function list_rewards()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		$data['rewards'] = $this->profile_model->get_rewards($this->session->userdata('user_id'))->result();
+        $this->load->view('list_rewards',$data);
+    } 
+
+
+     /**
+     *
+	 * This function edit_rewards is used to
+	 * show the awards and membership 
+	 * details of the user for edit purpose. 
+	 * 
+	 */
+
+    public function edit_rewards()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		$data['rewards'] = $this->profile_model->get_rewards($this->session->userdata('user_id'))->row();			
+        $this->load->view('edit_rewards',$data);
+    } 
+
+     /**
+     *
+	 * This function update_rewards is used to
+	 * edit the rewards and memberships 
+	 * details of the user. 
+	 * 
+	 */
+
+    public function update_rewards()
+    {
+    	if (!$this->ion_auth->logged_in())
+		{
+			redirect('auth/login', 'refresh');
+		}
+		  if($this->input->post('submit') == 'edit_rewards')
+		        {                   	
+			        // validate form input 
+				        $this->form_validation->set_rules('reward', 'Reward', 'trim|required');   
+                		$this->form_validation->set_rules('year', 'Year', 'trim|required');
+                		$this->form_validation->set_rules('membership', 'Membership', 'trim|required'); 
+			        if ($this->form_validation->run() === TRUE)
+			        {
+		         	    $form_data = [				         	                			             
+					                'user_id' => $this->session->userdata('user_id'),
+						            'reward' => strtolower($this->input->post('reward')),
+						            'year' => strtolower($this->input->post('year')),
+									'membership' => strtolower($this->input->post('membership')),                
+					                'updated_at' => date('Y-m-d H:i:s'),                
+						            ];
+						            $form_data = $this->security->xss_clean($form_data);
+						            $rewards_data = $this->profile_model->get_rewards($this->session->userdata('user_id'))->row();      
+		                      $res = $this->profile_model->rewardsUpdate($form_data,$this->session->userdata('user_id'));		                     
+							if($res)
+							{  								
+                                    if($rewards_data->reward !== $this->input->post('reward')){ 
+                                     $arr['reward'] = $this->input->post('reward');
+                                    }
+                                    if($rewards_data->year !== $this->input->post('year')){
+                                     $arr['year'] = $this->input->post('year');
+                                    }
+                                    if($rewards_data->membership !== $this->input->post('membership')){
+                                     $arr['membership'] =  $this->input->post('membership');
+                                    }                                                                        
+                                    log_message('all', json_encode($arr)); 
+								$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your rewards and membership has been updated.</span>');
+							}else{
+								$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your rewards and membership has been updated.</span>');
+
+							}
+					           redirect('profile/edit_rewards/'.$this->session->userdata('user_id'));            
+			        }else{
+			        	$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your services & experience has not been updated. Please fill are the fields.</span>');
+			        	 redirect('profile/edit_rewards/'.$this->session->userdata('user_id'));			        	
+			        }
+			    }else{
+			    	redirect('profile/list_rewards');
+			    }	
+       
+    }
 
 
 }

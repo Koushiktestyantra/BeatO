@@ -46,7 +46,8 @@ class Profile_model extends CI_Model {
 	}
 	
 	function get_userdata($useid)
-	{   $this->db->select('*');
+	{   
+		$this->db->select('*');
 		$this->db->from('users');
 		$this->db->where('id',$useid);
 		$query = $this->db->get();
@@ -54,10 +55,18 @@ class Profile_model extends CI_Model {
 	}
 
 	function get_educationData($userid)
-	{   $this->db->select('*');
+	{   
+		$this->db->select('*');
 		$this->db->from('education');
 		$this->db->where('user_id',$userid);
 		$query = $this->db->get();
+		return $query;		
+	}
+
+	function educationUpdate($data,$userid)
+	{   
+		$this->db->where('id',$useid);
+		$query = $this->db->update('edu',$data);  
 		return $query;		
 	}
 
@@ -81,5 +90,35 @@ class Profile_model extends CI_Model {
 		$query = $this->db->update('services',$data);  
 		return $query;
 	}
+
+	function check_rewards($userid)
+	{
+		$this->db->select('*');
+		$this->db->from('rewards');
+		$this->db->where('user_id',$userid);
+		$query = $this->db->get();		
+		return $query->num_rows();
+	}
+
+	function rewards($data)
+	{
+		$query= $this->db->insert('rewards',$data);
+		return $query;
+	}
+
+	function get_rewards($userid)
+	{   $this->db->select('*');
+		$this->db->from('rewards');
+		$this->db->where('user_id',$userid);
+		$query = $this->db->get();
+		return $query;		
+	}
+
+	function rewardsUpdate($data,$useid)
+	{
+		$this->db->where('user_id',$useid);
+		$query = $this->db->update('rewards',$data);  
+		return $query;
+	}	
 
 }
