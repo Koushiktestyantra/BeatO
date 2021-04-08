@@ -63,10 +63,10 @@ class Profile_model extends CI_Model {
 		return $query;		
 	}
 
-	function educationUpdate($data,$userid)
+	function educationUpdate($data, $userid)
 	{   
-		$this->db->where('id',$useid);
-		$query = $this->db->update('edu',$data);  
+		$this->db->where('user_id',$userid);
+		$query = $this->db->update('education',$data);  
 		return $query;		
 	}
 

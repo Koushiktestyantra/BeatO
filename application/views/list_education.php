@@ -32,7 +32,7 @@
                       <td> <?php echo htmlspecialchars( $educations->college,ENT_QUOTES,'UTF-8');?> </td>
                       <td><?php echo htmlspecialchars( $educations->year ,ENT_QUOTES,'UTF-8');?></td>
                       <td><?php echo htmlspecialchars( $educations->specialization,ENT_QUOTES,'UTF-8');?></td>
-                      <td><a href="<?php echo base_url();?>profile/edit_education/<?php echo $educations->id;?>">EDIT</a></td>
+                      <td><a href="<?php echo base_url();?>profile/edit_education/<?php echo $educations->user_id;?>">EDIT</a></td>
                     </tr> 
                                        
                   </tbody>

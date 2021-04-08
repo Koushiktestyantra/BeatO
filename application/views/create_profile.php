@@ -26,6 +26,7 @@
               <!-- /.card-header -->
               <!-- form start -->
               <form action="<?php echo base_url(); ?>profile/create_profile" enctype="multipart/form-data" method="post">
+              <input name="<?php echo $this->security->get_csrf_token_name(); ?>" type="hidden" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>

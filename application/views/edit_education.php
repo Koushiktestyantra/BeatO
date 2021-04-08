@@ -1,5 +1,10 @@
 <?php $this->load->view('auth/header');?>
-
+ <!-- Tags Plugin Files -->
+  <link rel="stylesheet" href="<?php echo base_url();?>public/tags/custom_folder/bootstrap.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>public/tags/custom_folder/bootstrap-tagsinput.css" />
+  <script src="<?php echo base_url();?>public/tags/custom_folder/bootstrap.min.js"></script>
+  <script src="<?php echo base_url();?>public/tags/custom_folder/bootstrap-tagsinput.js"></script>
+  <!-- Tags Plugin Files -->
 <?php $this->load->view('auth/sidebar');?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -29,8 +34,7 @@
               <!-- form start -->
               <form action="<?php echo base_url(); ?>profile/updated_education" enctype="multipart/form-data" method="post">
                 <input name="<?php echo $this->security->get_csrf_token_name(); ?>" type="hidden" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-                <div class="card-body">
-                <input type="hidden" class="form-control" name="user_id" id="college" value="<?php if($education_data->college != ''){ echo $education_data->college;} ?>" placeholder="Enter Name">
+                <div class="card-body">                
                   <div class="form-group">
                     <label for="exampleInputEmail1">Qualification</label>
                     <input type="text" class="form-control" name="qualification" id="qualification" value="<?php if($education_data->qualification != ''){ echo $education_data->qualification;} ?>" placeholder="Enter Name">
@@ -43,7 +47,7 @@
                     <label for="exampleInputEmail1">Year of Completion</label>
                     <select type="text" class="form-control" name="year" id="year">                    	
                       <?php for($i=2010;$i<2016;$i++){?>
-                    	<option value="<?php if($education_data->year == $i){ echo 'selected="select"'; }?>"><?php echo $i;?></option>
+                    	<option value="<?php echo $i;?>" <?php if($education_data->year == $i){ echo 'selected="selected"'; }?>><?php echo $i;?></option>
                       <?php } ?>                    	
                     </select>
                   </div>

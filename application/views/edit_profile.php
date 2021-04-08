@@ -25,7 +25,8 @@
               <?php echo validation_errors(); ?>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="<?php echo base_url(); ?>profile/update_profile" enctype="multipart/form-data" method="post">              
+              <form action="<?php echo base_url(); ?>profile/update_profile" enctype="multipart/form-data" method="post">  
+              <input name="<?php echo $this->security->get_csrf_token_name(); ?>" type="hidden" value="<?php echo $this->security->get_csrf_hash(); ?>" />            
                <input type="hidden" class="form-control" name="profileId" id="profileId" value="<?php echo $profile->id; ?>">
                 <input type="hidden" class="form-control" name="imageName" id="imageName" value="<?php echo htmlspecialchars($profile->image, ENT_QUOTES,'UTF-8' ); ?>">
                 <div class="card-body">

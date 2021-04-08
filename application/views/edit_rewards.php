@@ -59,12 +59,6 @@
   </div>
 </div>    
 <?php $this->load->view('auth/footer.php'); ?>
-<script type="text/javascript">
-  $('#sepecialization').tagsinput({
-   confirmKeys: [13, 44],
-   maxTags: 20
-});
-</script>
 <script>
 var i=2;
 $("#addMore").click(function(){
@@ -79,8 +73,7 @@ $("#addMore").click(function(){
 });
 </script>
 <script>
-  function foo(id){
-    alert(id);
+  function foo(id){   
     $("#cover_"+id).remove();
 }
 </script>

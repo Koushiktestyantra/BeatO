@@ -423,7 +423,7 @@ class Profile extends CI_Controller {
 			redirect('auth/login', 'refresh');
 		}			    
 	    	    if($this->input->post('submit') == 'edit')
-				    {                   	
+				    {			  
 					        // validate form input 
 					        $this->form_validation->set_rules('qualification', 'Qualification', 'trim|required|max_length[50]');   
 					        $this->form_validation->set_rules('college', 'College', 'trim|required|max_length[50]');
@@ -431,6 +431,7 @@ class Profile extends CI_Controller {
 					        $this->form_validation->set_rules('specialization', 'Specialization', 'trim|required'); 
 					        if ($this->form_validation->run() === TRUE)
 					        {
+					        	                	
 				         	    $form_data =[					             
 							                'qualification' => strtolower($this->input->post('qualification')),
 							                'college' => strtolower($this->input->post('college')),
@@ -459,10 +460,11 @@ class Profile extends CI_Controller {
 										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has been submitted.</span>');
 									}else{
 										$this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has not been submitted.</span>');
-
 									}
-							           redirect('profile/education');            
+							        redirect('profile/edit_education/'.$this->session->userdata('user_id'));            
 					        }
+					        $this->session->set_flashdata('msg', '<span style="font-size:14px;color:red;">Your form has not been submitted.Please fill all the fields.</span>');
+					        redirect('profile/edit_education/'.$this->session->userdata('user_id')); 
 			        }
 	        
     }
@@ -477,8 +479,7 @@ class Profile extends CI_Controller {
 	 * 
 	 */
     public function services()
-    {
-    	//print_r($_SESSION);die;
+    {    	
     	if (!$this->ion_auth->logged_in())
 		{
 			redirect('auth/login', 'refresh');

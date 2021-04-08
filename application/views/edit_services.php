@@ -1,4 +1,10 @@
 <?php $this->load->view('auth/header');?>
+<!-- Tags Plugin Files -->
+  <link rel="stylesheet" href="<?php echo base_url();?>public/tags/custom_folder/bootstrap.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>public/tags/custom_folder/bootstrap-tagsinput.css" />
+  <script src="<?php echo base_url();?>public/tags/custom_folder/bootstrap.min.js"></script>
+  <script src="<?php echo base_url();?>public/tags/custom_folder/bootstrap-tagsinput.js"></script>
+  <!-- Tags Plugin Files -->
 <?php $this->load->view('auth/sidebar');?>
 <script>
   $( function() {
